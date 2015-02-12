@@ -138,6 +138,8 @@ for ($i = 0; $i < count($data); $i++) {
 //print_r($nodes);
 //print_r($edges);
 
-var_dump(topological_sort($nodes, $edges, $data));
+$sorted = topological_sort($nodes, $edges, $data);
+var_dump($sorted);
+file_put_contents('topology_sorted.txt', implode(PHP_EOL, $sorted));
 
 exit;

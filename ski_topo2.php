@@ -23,19 +23,36 @@ function topological_sort($nodes, $edges, $data) {
   $incoming = array();
   foreach ($edges as $edge) {
     $incoming[$edge[1]][$edge[0]] = 1;
+    $outgoing[$edge[0]][$edge[1]] = 1;
   }
   //print_r($incoming);
+  print "Formed incoming lookup = ".count($incoming).", outgoing lookup = ".count($outgoing).PHP_EOL;
 
   $L = array();
   $S = $nodes;
   arsort($S);
-  //$S = array_keys($nodes);
+  print 'Sorted $S'.PHP_EOL;
+
   while (count($S) > 0) {
     //$node = array_shift($S);
     $node = array_splice($S, 0, 1);
     $n = array_keys($node)[0];
     $L[] = $n;
 
+    if (isset($outgoing[$n])) {
+      foreach ($outgoing[$n] as $m => $v) {
+        unset($incoming[$m][$n]);
+        if (count($incoming[$m]) < 1) {
+          unset($incoming[$m]);
+          list($i, $j) = preg_split('/-/', $m);
+          $S[$m] = $data[$i][$j];
+          arsort($S);
+        }
+      }
+      unset($outgoing[$n]);
+    }
+
+    /*
     $loop_edges = $edges;
     $looped = array();
     while (count($loop_edges) > 0) {
@@ -52,14 +69,12 @@ function topological_sort($nodes, $edges, $data) {
         $looped[] = $edge;
     }
     $edges = $looped;
+    */
 
-    //print "DEBUG ---".PHP_EOL;
-    //print '$S = '.print_r($S, true);
-    //print '$L = '.print_r($L, true);
-    //readline();
+    print '$S = '.count($S).', $L = '.count($L).', $incoming = '.count($incoming).', $outgoing = '.count($outgoing).PHP_EOL;
   }
 
-  if (count($edges) > 0) {
+  if (count($incoming) > 0 || count($outgoing) > 0) {
     var_dump($edges);
     return null;
   } else
@@ -84,7 +99,7 @@ foreach (explode(PHP_EOL, trim($str)) as $line) {
     $max_j = intval($line_arr[1]);
   }
 }
-//print_r($data);
+print "Size of data = {$max_i} x {$max_j} = ".($max_i * $max_j).PHP_EOL;
 
 $nodes = array();
 $edges = array();
@@ -132,14 +147,13 @@ for ($i = 0; $i < count($data); $i++) {
       $nodes[strval($i.'-'.$j)] = $data[$i][$j];
     }
 
-    //readline();
   }
 }
-//print_r($nodes);
-//print_r($edges);
+print '$nodes = '.count($nodes).', $edges = '.count($edges).PHP_EOL;
 
 $sorted = topological_sort($nodes, $edges, $data);
-var_dump($sorted);
+//var_dump($sorted);
+print '$sorted = '.count($sorted).PHP_EOL;
 file_put_contents('topology_sorted.txt', implode(PHP_EOL, $sorted));
 
 exit;

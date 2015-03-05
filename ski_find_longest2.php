@@ -64,7 +64,7 @@ foreach (array_reverse($topo_sorted_data) as $node) {
     }
   }
 
-  $computed[$node]['drop'] = $computed[$node]['height'] - $computed[$node]['base_height'] + 1;
+  $computed[$node]['drop'] = $computed[$node]['height'] - $computed[$node]['base_height'];
 
   // Checking if it's the BEST NODE
   if (is_null($best_node) || ($best_node['longest_path'] <= $computed[$node]['longest_path'] && $best_node['drop'] < $computed[$node]['drop']))

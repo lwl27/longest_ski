@@ -154,6 +154,6 @@ print '$nodes = '.count($nodes).', $edges = '.count($edges).PHP_EOL;
 $sorted = topological_sort($nodes, $edges, $data);
 //var_dump($sorted);
 print '$sorted = '.count($sorted).PHP_EOL;
-file_put_contents('topology_sorted.txt', implode(PHP_EOL, $sorted));
+file_put_contents($argv[2], implode(PHP_EOL, $sorted));
 
 exit;

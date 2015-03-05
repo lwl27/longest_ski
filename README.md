@@ -42,6 +42,6 @@ BEST NODE = Array
     [height] => 9
     [longest_path] => 5
     [base_height] => 1
-    [drop] => 8
+    [drop] => 9
 )
 ```

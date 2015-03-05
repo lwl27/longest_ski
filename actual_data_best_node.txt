@@ -3,5 +3,5 @@ BEST NODE = Array
     [height] => 1466
     [longest_path] => 15
     [base_height] => 47
-    [drop] => 1419
+    [drop] => 1420
 )
